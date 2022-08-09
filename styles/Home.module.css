@@ -29,7 +29,7 @@
 }
 
 .title a {
-  color: #0070f3;
+  color: #ffffff;
   text-decoration: none;
 }
 
@@ -108,11 +108,34 @@
   margin-left: 0.5rem;
 }
 
+.landingdiv {
+  display: flex;
+}
+
+/* .sectionone_svg {
+  height: 200px;
+  width: 400px;
+} */
+
+/* xs */
 @media (max-width: 600px) {
   .grid {
     width: 100%;
     flex-direction: column;
   }
+
+  .main h1 {
+    font-size: 50px;
+  }
+
+  .landingdiv h2 {
+    font-size: 25px;
+  }
+
+  /* .sectionone_svg {
+    height: 100px;
+    width: 50px;
+  } */
 }
 
 @media (prefers-color-scheme: dark) {
