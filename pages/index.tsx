@@ -7,6 +7,7 @@ import Learning from "../public/font.svg";
 import { SectionOne } from "../components/home/SectionOne";
 import { Landing } from "../components/home/Landing";
 import { Footer } from "../components/home/Footer";
+import { SectionTwo } from "../components/home/SectionTwo";
 
 const Home: NextPage = () => {
   return (
@@ -42,6 +43,7 @@ const Home: NextPage = () => {
           }}
         >
           <SectionOne />
+          <SectionTwo />
         </Container>
       </div>
 

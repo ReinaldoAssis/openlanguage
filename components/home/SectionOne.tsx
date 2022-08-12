@@ -1,5 +1,4 @@
 import { Card, Col, Grid, Text } from "@nextui-org/react";
-import Learning from "../../public/studying.png";
 
 export const SectionOne = () => (
   <>
@@ -13,19 +12,23 @@ export const SectionOne = () => (
       Our Goal
     </Text>
 
-    <ul></ul>
-
     <Grid.Container gap={1} justify="center" css={{ height: "100%" }}>
       <Grid xs={12} sm={4} css={{ minWidth: 300, maxHeight: 400 }}>
         <img src="/hard.svg" />
       </Grid>
-      <Grid xs={12} sm={4} css={{ textAlign: "start" }}>
+      <Grid
+        xs={12}
+        sm={4}
+        css={{ textAlign: "start", "@xs": { minHeight: 300 } }}
+      >
         <Text
           h3
           css={{
-            marginTop: 90,
             textAlign: "justify",
             alignSelf: "start",
+            "@md": { marginTop: 90 },
+            "@lg": { marginTop: 90 },
+            "@sm": { marginTop: 90 },
           }}
         >
           &emsp;Language learning doesn't need to be boring and expensive! We

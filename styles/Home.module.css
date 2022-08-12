@@ -117,6 +117,10 @@
   width: 400px;
 } */
 
+.sectwo {
+  margin-top: 0;
+}
+
 /* xs */
 @media (max-width: 600px) {
   .grid {
@@ -136,6 +140,12 @@
     height: 100px;
     width: 50px;
   } */
+}
+
+@media (max-width: 960px) {
+  .sectwo {
+    margin-top: 100px;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
