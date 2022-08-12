@@ -5,6 +5,8 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Learning from "../public/font.svg";
 import { SectionOne } from "../components/home/SectionOne";
+import { Landing } from "../components/home/Landing";
+import { Footer } from "../components/home/Footer";
 
 const Home: NextPage = () => {
   return (
@@ -15,99 +17,35 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main} style={{ width: "100vw" }}>
-        <h1 className={styles.title}>
-          <a>OpenLanguage</a>
-        </h1>
-        <div className={styles.landingdiv}>
-          <Text
-            h2
-            size={30}
-            style={{ marginRight: 10 }}
-            css={{ color: "white" }}
-          >
-            Language acquisition for
-          </Text>
-          <Text
-            h2
-            size={30}
-            css={{
-              textGradient: "45deg, $blue600 -20%, $pink600 50%",
-            }}
-            weight="bold"
-          >
-            everyone
-          </Text>
-          <Text
-            h2
-            size={30}
-            style={{ marginRight: 10 }}
-            css={{ color: "white" }}
-          >
-            .
-          </Text>
-        </div>
-        <Button
-          css={{ boxShadow: "0px 2px 15px #0072f5", marginTop: 40 }}
-          size="lg"
-        >
-          Start learning
-        </Button>
-      </main>
+      {/* Landing Screen */}
+      <Landing />
+
       {/*========== BODY ========== */}
       <div
         style={{ backgroundColor: "white", height: "100vh", width: "100vw" }}
       >
-        <div
-          style={{
-            paddingRight: "10em",
-            paddingLeft: "10em",
+        <Container
+          css={{
             paddingTop: 20,
             height: "30em",
+            "@sm": {
+              padding: 0,
+            },
+            "@md": {
+              paddingRight: "10em",
+              paddingLeft: "10em",
+            },
+            "@lg": {
+              paddingRight: "10em",
+              paddingLeft: "10em",
+            },
           }}
         >
-          <Text
-            h1
-            css={{
-              textGradient: "45deg, #3b3b3b -20%, #000000 50%",
-              marginLeft: 20,
-            }}
-          >
-            Our Goal
-          </Text>
-
-          <ul></ul>
-
-          <Grid.Container gap={1} justify="center" css={{ height: "100%" }}>
-            <Grid xs={12} sm={4}>
-              <img src="/hard.svg" />
-            </Grid>
-            <Grid xs={12} sm={4}>
-              <Text
-                h3
-                css={{ marginLeft: 20, marginTop: 90, textAlign: "justify" }}
-              >
-                &emsp;Language learning doesn't need to be boring and expensive!
-                We want to provide tools to better aid the community of language
-                learners.
-              </Text>
-            </Grid>
-          </Grid.Container>
-        </div>
+          <SectionOne />
+        </Container>
       </div>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Made by Reinaldo Assis.
-          {/* <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span> */}
-        </a>
-      </footer>
+      <Footer />
     </div>
   );
 };
