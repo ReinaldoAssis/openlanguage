@@ -19,7 +19,10 @@ export const SectionOne = () => (
       <Grid
         xs={12}
         sm={4}
-        css={{ textAlign: "start", "@xs": { minHeight: 300 } }}
+        css={{
+          textAlign: "start",
+          "@xs": { minHeight: 300, height: "fit-content" },
+        }}
       >
         <Text
           h3

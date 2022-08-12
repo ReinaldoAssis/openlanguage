@@ -12,24 +12,26 @@ export const SectionTwo = () => (
     >
       Toolkit
     </Text>
-    <Grid.Container gap={1} justify="center" css={{ height: "100%" }}>
-      <ToolCard
-        iconRef="home/cards.svg"
-        title="Flashcards"
-        description="Create your deck of words and expressions."
-      />
-      <ToolCard
-        description="A perfect place to develop your writing skills in your target language."
-        title="Writing Studio"
-        iconRef="/home/writing.svg"
-      />
-      <ToolCard
-        iconRef="/home/comment.svg"
-        description="Help and be helped by the community!"
-        title="Community"
-      />
-      {/* <ToolCard /> */}
-    </Grid.Container>
+    <div className={styles.sectwoaux}>
+      <Grid.Container gap={3} justify="center" css={{ height: "100%" }}>
+        <ToolCard
+          iconRef="home/cards.svg"
+          title="Flashcards"
+          description="Create your deck of words and expressions."
+        />
+        <ToolCard
+          description="A perfect place to develop your writing skills in your target language."
+          title="Writing Studio"
+          iconRef="/home/writing.svg"
+        />
+        <ToolCard
+          iconRef="/home/comment.svg"
+          description="Help and be helped by the community!"
+          title="Community"
+        />
+        {/* <ToolCard /> */}
+      </Grid.Container>
+    </div>
   </div>
 );
 

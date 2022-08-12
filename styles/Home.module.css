@@ -13,12 +13,19 @@
 }
 
 .footer {
+  height: 100px;
+  background-color: black;
   display: flex;
   flex: 1;
   padding: 2rem 0;
   border-top: 1px solid #eaeaea;
   justify-content: center;
   align-items: center;
+
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  max-width: 100vw;
 }
 
 .footer a {
@@ -119,6 +126,12 @@
 
 .sectwo {
   margin-top: 0;
+  padding-bottom: 5em;
+}
+
+.sectwoaux {
+  padding-right: 15em;
+  padding-left: 15em;
 }
 
 /* xs */
@@ -136,6 +149,11 @@
     font-size: 25px;
   }
 
+  .sectwoaux {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
   /* .sectionone_svg {
     height: 100px;
     width: 50px;
@@ -145,6 +163,13 @@
 @media (max-width: 960px) {
   .sectwo {
     margin-top: 100px;
+  }
+}
+
+@media (max-width: 1600px) and (min-width: 600px) {
+  .sectwoaux {
+    padding-right: 5em;
+    padding-left: 5em;
   }
 }
 
