@@ -34,8 +34,8 @@ export const SectionOne = () => (
             "@sm": { marginTop: 90 },
           }}
         >
-          &emsp;Language learning doesn't need to be boring and expensive! We
-          want to provide tools to better aid the community of language
+          &emsp;Language learning doesn&apos;t need to be boring and expensive!
+          We want to provide tools to better aid the community of language
           learners.
         </Text>
       </Grid>
