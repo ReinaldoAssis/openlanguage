@@ -13,23 +13,43 @@ export const SectionTwo = () => (
       Toolkit
     </Text>
     <Grid.Container gap={1} justify="center" css={{ height: "100%" }}>
-      <ToolCard />
-      <ToolCard />
-      <ToolCard />
-      <ToolCard />
+      <ToolCard
+        iconRef="home/cards.svg"
+        title="Flashcards"
+        description="Create your deck of words and expressions."
+      />
+      <ToolCard
+        description="A perfect place to develop your writing skills in your target language."
+        title="Writing Studio"
+        iconRef="/home/writing.svg"
+      />
+      <ToolCard
+        iconRef="/home/comment.svg"
+        description="Help and be helped by the community!"
+        title="Community"
+      />
+      {/* <ToolCard /> */}
     </Grid.Container>
   </div>
 );
 
-const ToolCard = () => (
+const ToolCard = ({
+  description,
+  iconRef,
+  title,
+}: {
+  description?: string;
+  iconRef?: string;
+  title?: string;
+}) => (
   <Grid xs={8} md={4} sm={4}>
     <Card isHoverable>
       <Card.Header>
-        <img height={34} width={34} src="/cards.svg " />
-        <h3 style={{ marginLeft: 10 }}>Random phrases</h3>
+        <img height={34} width={34} src={iconRef} />
+        <h3 style={{ marginLeft: 10 }}>{title}</h3>
       </Card.Header>
-      <Card.Body>
-        <h5>Hi mom hi dad</h5>
+      <Card.Body css={{ paddingTop: 0 }}>
+        <h5>{description}</h5>
       </Card.Body>
     </Card>
   </Grid>
