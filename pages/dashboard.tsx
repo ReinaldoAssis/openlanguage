@@ -9,7 +9,7 @@ export default function Dashboard() {
   return (
     <>
       <main className={styles.main}>
-        <h3>{phrase}</h3>
+        <h3>{generate_text(phrase)}</h3>
         <Button
           css={{
             boxShadow: "0px 2px 15px #0072f5",
@@ -37,4 +37,22 @@ interface fetchData {
 async function fetch_phrase(): Promise<fetchData> {
   let resp: any = await (await fetch("/api/get_phrase")).json();
   return { target: resp.sentence.text };
+}
+
+function generate_text(target: string): JSX.Element {
+  let list: Array<string> = target.split(" ");
+
+  return (
+    <div style={{ display: "flex" }}>
+      {list.map((word, i) => (
+        <h3
+          key={`${i}targetword`}
+          style={{ marginLeft: i != 0 ? 5 : 0 }}
+          className={styles.targetword}
+        >
+          {word}
+        </h3>
+      ))}
+    </div>
+  );
 }
