@@ -1,4 +1,5 @@
 import { Button, Text } from "@nextui-org/react";
+import Link from "next/link";
 import styles from "../../styles/Home.module.css";
 
 export const Landing = () => (
@@ -25,12 +26,14 @@ export const Landing = () => (
           .
         </Text>
       </div>
-      <Button
-        css={{ boxShadow: "0px 2px 15px #0072f5", marginTop: 40 }}
-        size="lg"
-      >
-        Start learning
-      </Button>
+      <Link href="/dashboard/" passHref>
+        <Button
+          css={{ boxShadow: "0px 2px 15px #0072f5", marginTop: 40 }}
+          size="lg"
+        >
+          Start learning
+        </Button>
+      </Link>
     </main>
   </>
 );
