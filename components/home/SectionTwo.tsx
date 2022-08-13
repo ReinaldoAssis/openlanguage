@@ -13,7 +13,11 @@ export const SectionTwo = () => (
       Toolkit
     </Text>
     <div className={styles.sectwoaux}>
-      <Grid.Container gap={3} justify="center" css={{ height: "100%" }}>
+      <Grid.Container
+        gap={3}
+        justify="center"
+        css={{ height: "100%", overflow: "visible" }}
+      >
         <ToolCard
           iconRef="home/cards.svg"
           title="Flashcards"
@@ -44,8 +48,8 @@ const ToolCard = ({
   iconRef?: string;
   title?: string;
 }) => (
-  <Grid xs={8} md={4} sm={4}>
-    <Card isHoverable>
+  <Grid xs={8} md={4} sm={4} css={{ overflow: "visible" }}>
+    <Card isHoverable css={{ overflow: "visible" }}>
       <Card.Header>
         <img height={34} width={34} src={iconRef} />
         <h3 style={{ marginLeft: 10 }}>{title}</h3>
