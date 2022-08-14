@@ -45,7 +45,11 @@ function generate_text(target: string): JSX.Element {
   return (
     <div style={{ display: "flex" }}>
       {list.map((word, i) => (
-        <Popover placement="top" disableAnimation>
+        <Popover
+          key={`${i}popover_targetword`}
+          placement="top"
+          disableAnimation
+        >
           <Popover.Trigger>
             <h3
               key={`${i}targetword`}
