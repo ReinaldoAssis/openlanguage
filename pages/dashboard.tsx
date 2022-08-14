@@ -42,6 +42,24 @@ async function fetch_phrase(): Promise<fetchData> {
 function generate_text(target: string): JSX.Element {
   let list: Array<string> = target.split(" ");
 
+  const [translation, setTranslation] = useState("null");
+
+  async function get_translation(word: string, base: string, target: string) {
+    if (translation != "null") return translation;
+
+    //`https://openlanguage.deta.dev/translate?text=hi&base=en&target=fr`
+    let tr: string = (
+      await (
+        await fetch(
+          `https://openlanguage.deta.dev/translate?text=${word}&base=${base}&target=${target}`
+        )
+      ).json()
+    ).value;
+
+    setTranslation(tr);
+    return tr;
+  }
+
   return (
     <div style={{ display: "flex" }}>
       {list.map((word, i) => (
@@ -49,6 +67,7 @@ function generate_text(target: string): JSX.Element {
           key={`${i}popover_targetword`}
           placement="top"
           disableAnimation
+          onOpenChange={async () => await get_translation(word, "fr", "en")}
         >
           <Popover.Trigger>
             <h3
@@ -60,7 +79,7 @@ function generate_text(target: string): JSX.Element {
             </h3>
           </Popover.Trigger>
           <Popover.Content>
-            <h4 style={{ color: "black" }}>Test</h4>
+            <h4 style={{ color: "black" }}>{translation}</h4>
           </Popover.Content>
         </Popover>
       ))}
