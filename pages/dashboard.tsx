@@ -1,6 +1,7 @@
 import { Button, Popover } from "@nextui-org/react";
 import { useState } from "react";
 import { Navbar } from "../components/dashboard/Navbar";
+import TranslationPopover from "../components/dashboard/TranslationPopover";
 import styles from "../styles/Dashboard.module.css";
 
 export default function Dashboard() {
@@ -42,46 +43,10 @@ async function fetch_phrase(): Promise<fetchData> {
 function Generate_text(target: string): JSX.Element {
   let list: Array<string> = target.split(" ");
 
-  const [translation, setTranslation] = useState("null");
-
-  async function Get_translation(word: string, base: string, target: string) {
-    if (translation != "null") return translation;
-
-    //`https://openlanguage.deta.dev/translate?text=hi&base=en&target=fr`
-    let tr: string = (
-      await (
-        await fetch(
-          `https://openlanguage.deta.dev/translate?text=${word}&base=${base}&target=${target}`
-        )
-      ).json()
-    ).value;
-
-    setTranslation(tr);
-    return tr;
-  }
-
   return (
     <div style={{ display: "flex" }}>
       {list.map((word, i) => (
-        <Popover
-          key={`${i}popover_targetword`}
-          placement="top"
-          disableAnimation
-          onOpenChange={async () => await Get_translation(word, "fr", "en")}
-        >
-          <Popover.Trigger>
-            <h3
-              key={`${i}targetword`}
-              style={{ marginLeft: i != 0 ? 5 : 0 }}
-              className={styles.targetword}
-            >
-              {word}
-            </h3>
-          </Popover.Trigger>
-          <Popover.Content>
-            <h4 style={{ color: "black" }}>{translation}</h4>
-          </Popover.Content>
-        </Popover>
+        <TranslationPopover i={i} word={word} />
       ))}
     </div>
   );
