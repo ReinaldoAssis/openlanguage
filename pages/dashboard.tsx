@@ -9,7 +9,7 @@ export default function Dashboard() {
   return (
     <>
       <main className={styles.main}>
-        <h3>{generate_text(phrase)}</h3>
+        <h3>{Generate_text(phrase)}</h3>
         <Button
           css={{
             boxShadow: "0px 2px 15px #0072f5",
@@ -39,12 +39,12 @@ async function fetch_phrase(): Promise<fetchData> {
   return { target: resp.sentence.text };
 }
 
-function generate_text(target: string): JSX.Element {
+function Generate_text(target: string): JSX.Element {
   let list: Array<string> = target.split(" ");
 
   const [translation, setTranslation] = useState("null");
 
-  async function get_translation(word: string, base: string, target: string) {
+  async function Get_translation(word: string, base: string, target: string) {
     if (translation != "null") return translation;
 
     //`https://openlanguage.deta.dev/translate?text=hi&base=en&target=fr`
@@ -67,7 +67,7 @@ function generate_text(target: string): JSX.Element {
           key={`${i}popover_targetword`}
           placement="top"
           disableAnimation
-          onOpenChange={async () => await get_translation(word, "fr", "en")}
+          onOpenChange={async () => await Get_translation(word, "fr", "en")}
         >
           <Popover.Trigger>
             <h3
