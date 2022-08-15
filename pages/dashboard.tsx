@@ -46,7 +46,7 @@ function Generate_text(target: string): JSX.Element {
   return (
     <div style={{ display: "flex" }}>
       {list.map((word, i) => (
-        <TranslationPopover i={i} word={word} />
+        <TranslationPopover key={`custompopover-${i}`} i={i} word={word} />
       ))}
     </div>
   );
