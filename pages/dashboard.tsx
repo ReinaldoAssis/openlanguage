@@ -2,7 +2,6 @@ import { Button, Popover } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import RandPhrase from "../components/dashboard/modes/RandPhrase";
 import { Navbar } from "../components/dashboard/Navbar";
-import TranslationPopover from "../components/dashboard/TranslationPopover";
 
 export default function Dashboard() {
   return (
