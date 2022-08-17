@@ -1,37 +1,26 @@
 import { Popover } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../../styles/Dashboard.module.css";
 
 export default function TranslationPopover({
   i,
   word,
+  translation,
 }: {
   i: number;
   word: string;
+  translation: string;
 }): JSX.Element {
-  const [translation, setTranslation] = useState("null");
-
-  async function Get_translation(word: string, base: string, target: string) {
-    if (translation != "null") return translation;
-
-    let tr: string = (
-      await (
-        await fetch(
-          `https://openlanguage.deta.dev/translate?text=${word}&base=${base}&target=${target}`
-        )
-      ).json()
-    ).value;
-
-    setTranslation(tr);
-    return tr;
-  }
+  useEffect(() => {
+    translation = translation;
+  }, [translation]);
 
   return (
     <Popover
       key={`${i}popover_targetword`}
       placement="top"
       disableAnimation
-      onOpenChange={async () => await Get_translation(word, "fr", "en")}
+      //   onOpenChange={async () => await Get_translation(word, "fr", "en")}
     >
       <Popover.Trigger>
         <h3

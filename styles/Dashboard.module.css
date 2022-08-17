@@ -25,3 +25,47 @@
   cursor: pointer;
   translate: 0 -2px;
 }
+
+/* mode: random phrase */
+
+.phrasedisplay {
+  display: flex;
+  align-items: center;
+}
+
+.phrasedisplay h3 {
+  margin-bottom: 5px;
+}
+
+.phrasedisplay img {
+  cursor: pointer;
+  transition-duration: 100ms;
+}
+
+.phrasedisplay img:hover {
+  transform: scale(1.05);
+  filter: brightness(120%);
+}
+
+.brokencontainer {
+  display: block;
+  justify-content: center;
+  justify-items: center;
+}
+
+.brokenline {
+  display: flex;
+  margin-top: 5px;
+  justify-content: center;
+}
+
+.translationword_container {
+  position: absolute;
+  top: 200px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.translationword {
+  color: rgb(171, 171, 171);
+}
