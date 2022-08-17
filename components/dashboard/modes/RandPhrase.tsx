@@ -48,15 +48,18 @@ async function fetch_all_translations(
 export default function RandPhrase() {
   const [frase, setFrase] = useState("Hi mom hi dad");
   //const [translation, setTranslation] = useState(Array<string>);
+  const [width, setWidth] = useState(600);
 
-  const [width, setWidth] = useState(window.innerWidth);
-  const updateDimensions = () => {
-    setWidth(window.innerWidth);
-  };
-  useEffect(() => {
-    window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
-  }, []);
+  if (typeof window !== "undefined") {
+    const updateDimensions = () => {
+      setWidth(window.innerWidth);
+    };
+    useEffect(() => {
+      setWidth(window.innerWidth);
+      window.addEventListener("resize", updateDimensions);
+      return () => window.removeEventListener("resize", updateDimensions);
+    }, []);
+  }
 
   useEffect(() => {
     fetch_phrase().then(async (x) => {
