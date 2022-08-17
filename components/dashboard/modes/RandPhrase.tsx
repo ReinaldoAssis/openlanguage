@@ -50,16 +50,16 @@ export default function RandPhrase() {
   //const [translation, setTranslation] = useState(Array<string>);
   const [width, setWidth] = useState(600);
 
-  if (typeof window !== "undefined") {
-    const updateDimensions = () => {
-      setWidth(window.innerWidth);
-    };
-    useEffect(() => {
+  const updateDimensions = () => {
+    setWidth(window.innerWidth);
+  };
+  useEffect(() => {
+    if (typeof window !== "undefined") {
       setWidth(window.innerWidth);
       window.addEventListener("resize", updateDimensions);
       return () => window.removeEventListener("resize", updateDimensions);
-    }, []);
-  }
+    }
+  }, []);
 
   useEffect(() => {
     fetch_phrase().then(async (x) => {
