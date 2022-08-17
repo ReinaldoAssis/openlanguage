@@ -107,14 +107,18 @@ function TextSplitter({ text, width }: { text: string; width: number }) {
     brokenLines.push(spl.splice(0, Math.ceil(width / 100)));
   }
 
+  function randKey(seed?: number): string {
+    return (Math.random() * (seed ?? 1) + 1).toString(36).substring(7);
+  }
+
   //console.log(brokenLines);
 
   return (
     <div className={styles.brokencontainer}>
       {brokenLines.map((line, j) => (
-        <div className={styles.brokenline}>
+        <div key={randKey(j)} className={styles.brokenline}>
           {line.map((word, i) => (
-            <WordElement word={word} i={i} />
+            <WordElement key={randKey(j)} word={word} i={i} />
           ))}
         </div>
       ))}
