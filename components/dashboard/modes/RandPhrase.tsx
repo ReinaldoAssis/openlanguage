@@ -119,9 +119,9 @@ function TextSplitter({ text, width }: { text: string; width: number }) {
   return (
     <div className={styles.brokencontainer}>
       {brokenLines.map((line, j) => (
-        <div key={randKey(j)} className={styles.brokenline}>
+        <div key={randKey()} className={styles.brokenline}>
           {line.map((word, i) => (
-            <WordElement key={randKey(j)} word={word} i={i} />
+            <WordElement key={randKey()} word={word} i={i} />
           ))}
         </div>
       ))}
@@ -129,9 +129,31 @@ function TextSplitter({ text, width }: { text: string; width: number }) {
   );
 }
 
+function clean_word(word: string): string {
+  word = word.trim().toLowerCase();
+  word = word
+    .replaceAll(".", "")
+    .replaceAll("?", "")
+    .replaceAll("!", "")
+    .replaceAll(",", "")
+    .replaceAll(";", "")
+    .replaceAll("l'", "")
+    .replaceAll("L'", "")
+    .replaceAll("d'", "")
+    .replaceAll("D'", "")
+    .replaceAll("-Tu", "")
+    .replaceAll("-Vous", "");
+
+  return word;
+}
+
 function WordElement({ word, i }: { word: string; i: number }) {
   const [showTranslation, setShowTranslation] = useState(false);
   const [translation, setTranslation] = useState("Loading...");
+
+  useEffect(() => {
+    setTranslation("Loading...");
+  }, []);
 
   const show = async () => {
     setShowTranslation(true);
@@ -139,13 +161,14 @@ function WordElement({ word, i }: { word: string; i: number }) {
       //TODO: change hard coded language
       let wikitext = await (
         await fetch(
-          `https://openlanguage.deta.dev/definition?word=${encodeURI(
-            word
-          )}&base=fr`
+          `/api/get_def?base=${"fr"}&word=${encodeURI(clean_word(word))}`
         )
       ).json();
-      console.log(wikitext.value[0].def);
-      console.log(wikitext);
+      console.log(
+        `link: /api/get_def?base=${"fr"}&word=${encodeURI(clean_word(word))}`
+      );
+      // console.log(wikitext.value[0].def);
+      // console.log(wikitext);
       setTranslation(wikitext.value[0].def);
     }
   };
