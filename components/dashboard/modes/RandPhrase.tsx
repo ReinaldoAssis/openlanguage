@@ -11,38 +11,22 @@ interface fetchData {
   base?: string;
 }
 
+interface WikiTextDefinition {
+  def: string;
+  example: string[];
+}
+
+interface WikiTextWordClass {
+  [wordClass: string]: WikiTextDefinition;
+}
+
+interface WikiText {
+  value: WikiTextWordClass[];
+}
+
 async function fetch_phrase(): Promise<fetchData> {
   let resp: any = await (await fetch("/api/get_phrase")).json();
   return { target: resp.sentence.text };
-}
-
-async function fetch_word_translation(
-  word: string,
-  base: string,
-  target: string
-): Promise<string> {
-  let tr: string = (
-    await (
-      await fetch(
-        `https://openlanguage.deta.dev/translate?text=${word}&base=${base}&target=${target}`
-      )
-    ).json()
-  ).value;
-  return tr;
-}
-
-async function fetch_all_translations(
-  text: string,
-  base: string,
-  target: string
-): Promise<Array<string>> {
-  let arr: Array<string> = [];
-  let spl = text.split(" ");
-  spl.forEach(async (word) => {
-    arr.push(await fetch_word_translation(word, base, target));
-    console.log(arr[arr.length - 1]);
-  });
-  return arr;
 }
 
 export default function RandPhrase() {
@@ -50,9 +34,12 @@ export default function RandPhrase() {
   //const [translation, setTranslation] = useState(Array<string>);
   const [width, setWidth] = useState(600);
 
+  //called when window is resized
   const updateDimensions = () => {
     setWidth(window.innerWidth);
   };
+
+  //gets the window size and the risize event
   useEffect(() => {
     if (typeof window !== "undefined") {
       setWidth(window.innerWidth);
@@ -61,19 +48,20 @@ export default function RandPhrase() {
     }
   }, []);
 
+  //fetch uma frase aleatoria
   useEffect(() => {
-    fetch_phrase().then(async (x) => {
-      setFrase("" + x.target);
-
-      //https://fr.wiktionary.org/w/api.php?action=parse&page=dehors&section=1&prop=wikitext&format=json
-    });
-    //fetch_all_translations(frase,"fr","en"); //TODO: change hardcoded languages
+    //TEMP
+    // fetch_phrase().then(async (x) => {
+    //   setFrase("" + x.target);
+    // });
+    setFrase(
+      "La pire chose que l'on puisse faire est de ne faire quelque chose qu'à moitié sérieusement."
+    );
   }, []);
 
+  //button action, gets a new random phrase
   const refresh = () => {
-    // console.log("refreshing...");
     fetch_phrase().then((x) => setFrase("" + x.target));
-    //fetch_all_translations(frase,"fr","en");
   };
 
   return (
@@ -114,8 +102,6 @@ function TextSplitter({ text, width }: { text: string; width: number }) {
     return (Math.random() * (seed ?? 1) + 1).toString(36).substring(7);
   }
 
-  //console.log(brokenLines);
-
   return (
     <div className={styles.brokencontainer}>
       {brokenLines.map((line, j) => (
@@ -127,6 +113,31 @@ function TextSplitter({ text, width }: { text: string; width: number }) {
       ))}
     </div>
   );
+}
+
+async function get_definition(
+  currentDefinition: string,
+  word: string
+): Promise<string> {
+  if (currentDefinition == "Loading...") {
+    //TODO: change hard coded language
+    let wikitext: WikiText = await (
+      await fetch(
+        `/api/get_def?base=${"fr"}&word=${encodeURI(clean_word(word))}`
+      )
+    ).json();
+
+    let parsedObj = {};
+    // Object.values(wikitext.value).forEach((v, i) => {
+    //   console.log(Object.keys(wikitext.value)[i]);
+    //   console.log(v);
+    // });
+
+    // console.log(Object.values(wikitext.value)[0][0].def);
+    return Object.values(wikitext.value)[0][0].def;
+  }
+
+  return "";
 }
 
 function clean_word(word: string): string {
@@ -149,42 +160,23 @@ function clean_word(word: string): string {
 
 function WordElement({ word, i }: { word: string; i: number }) {
   const [showTranslation, setShowTranslation] = useState(false);
-  const [translation, setTranslation] = useState("Loading...");
+  const [definition, setDefinition] = useState("Loading...");
 
   useEffect(() => {
-    setTranslation("Loading...");
+    setDefinition("Loading...");
   }, []);
 
   const show = async () => {
     setShowTranslation(true);
-    if (translation == "Loading...") {
-      //TODO: change hard coded language
-      let wikitext = await (
-        await fetch(
-          `/api/get_def?base=${"fr"}&word=${encodeURI(clean_word(word))}`
-        )
-      ).json();
-      console.log(
-        `link: /api/get_def?base=${"fr"}&word=${encodeURI(clean_word(word))}`
-      );
-      // console.log(wikitext.value[0].def);
-      // console.log(wikitext);
-      setTranslation(wikitext.value[0].def);
-    }
+    setDefinition(await get_definition(definition, word));
   };
   const hide = () => setShowTranslation(false);
-
-  //   useEffect(() => {
-  //     let mock = (Math.random() + 1).toString(36).substring(7);
-
-  //     setTranslation(mock);
-  //   }, []);
 
   return (
     <>
       {showTranslation ? (
         <div className={styles.translationword_container}>
-          <h3 className={styles.translationword}>{translation}</h3>
+          <h3 className={styles.translationword}>{definition}</h3>
         </div>
       ) : null}
       <h3

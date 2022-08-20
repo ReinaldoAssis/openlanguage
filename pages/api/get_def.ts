@@ -25,6 +25,8 @@ export default async function handler(
   if (args.base != "") args.base = decodeURI(args.base?.toString() ?? "");
   if (args.word != "") args.word = decodeURI(args.word?.toString() ?? "");
 
+  console.log(`Definition request ${args.word} lang=${args.base}`);
+
   let html = await (
     await fetch(
       `http://${args.base ?? "fr"}.wiktionary.org/wiki/${args.word ?? "null"}`
@@ -49,9 +51,13 @@ export default async function handler(
     position = "</div>";
   }
 
+  console.log(`Position: ${position}`);
+
   let aux_html = root.querySelector(".mw-parser-output")?.innerHTML ?? "";
   let maininfo =
     aux_html.substring(0, aux_html.indexOf(position)).split("</ol>") ?? [];
+
+  console.log(`Main info ${maininfo.length}`);
 
   let definitionsMor: Dictionary<Array<Definition>> = {};
 
@@ -100,5 +106,11 @@ export default async function handler(
       ] = definitions;
     }
   }
+
+  console.log("---------------");
+  console.log("Definitions mor");
+  console.log(definitionsMor);
+  console.log("---------------");
+
   res.status(200).json({ value: definitionsMor });
 }
