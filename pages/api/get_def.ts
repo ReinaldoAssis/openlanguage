@@ -4,13 +4,17 @@ import { HTMLElement, NodeType, parse } from "node-html-parser";
 
 type Data = {
   value: any;
-  class: string;
+  class?: string;
 };
 
 type Definition = {
   def: string;
   example: string | Array<string>;
 };
+
+interface Dictionary<T> {
+  [Key: string]: T;
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -30,40 +34,112 @@ export default async function handler(
   ).text();
   let root = parse(html);
 
-  //pega o tipo de classe referente a palavra
-  let wordClass = root.querySelectorAll(".mw-headline")[2]?.text ?? "null";
-  wordClass = wordClass.trim(); //limpa a string
+  //pega uma lista de possíveis classes para uma mesma palavra
+  // let wordClasses = root.
+  //   .filter((x) => x.localName == "b" && x.text == args.word);
 
-  //a parte principal do html onde se encontram as possíveis definições
-  //e seus exemplos em frases
-  let definicoesMor = root.querySelector("ol");
+  //limpa as tabelas do codigo fonte
+  root.querySelectorAll("table").forEach((t) => t.remove());
+  //pega a posição (se houver) da primeira sectionlanguage que não seja FR TODO: remove hardcoded language
+  let position = root
+    .querySelectorAll(".sectionlangue")
+    .filter((x) => x.id != "fr")[0].innerHTML;
 
-  //uma lista que contem as possíveis definições e suas frases
-  //filtra para coletar todos os <li> que não tenham parente <ul>
-  //aqueles com parentes <ul> são exemplos de frases
-  let exampleElementList =
-    definicoesMor
-      ?.querySelectorAll("li")
-      .filter((x) => x.parentNode.localName != "ul") ?? [];
+  let aux_html = root.querySelector(".mw-parser-output")?.innerHTML ?? "";
+  let maininfo =
+    aux_html.substring(0, aux_html.indexOf(position)).split("</ol>") ?? [];
 
-  //lista de definições a ser retonada pela API
-  let definitions: Array<Definition> = [];
+  let definitionsMor: Dictionary<Array<Definition>> = {};
 
-  //caso a lista não for vazia
-  if (exampleElementList.length > 0) {
-    exampleElementList.map((x) => {
-      let exampleContent = x.querySelector("ul");
-      let examplePhrase = exampleContent?.querySelectorAll("li");
-      let phraseList: Array<string> = [];
-      examplePhrase?.forEach((x) => phraseList.push(x.text.trim()));
+  for (let i = 0; i < maininfo.length; i++) {
+    maininfo[i] += "</ol>";
+    let section = parse(maininfo[i]);
 
-      let def: Definition = {
-        def: x.text.replace(exampleContent?.text ?? "", ""),
-        example: phraseList ?? "",
-      };
-      definitions.push(def);
-    });
+    if (
+      section
+        .querySelectorAll("b")
+        .filter((x) => x.text.includes(args.word + "")).length > 0
+    ) {
+      //a parte principal do html onde se encontram as possíveis definições
+      //e seus exemplos em frases
+      let definicoesMor = section.querySelector("ol");
+
+      //uma lista que contem as possíveis definições e suas frases
+      //filtra para coletar todos os <li> que não tenham parente <ul>
+      //aqueles com parentes <ul> são exemplos de frases
+      let exampleElementList =
+        definicoesMor
+          ?.querySelectorAll("li")
+          .filter((x) => x.parentNode.localName != "ul") ?? [];
+
+      //lista de definições a ser retonada pela API
+      let definitions: Array<Definition> = [];
+
+      //caso a lista não for vazia
+      if (exampleElementList.length > 0) {
+        exampleElementList.map((x) => {
+          let exampleContent = x.querySelector("ul");
+          let examplePhrase = exampleContent?.querySelectorAll("li");
+          let phraseList: Array<string> = [];
+          examplePhrase?.forEach((x) => phraseList.push(x.text.trim()));
+
+          let def: Definition = {
+            def: x.text.replace(exampleContent?.text ?? "", ""),
+            example: phraseList ?? "",
+          };
+          definitions.push(def);
+        });
+      }
+
+      definitionsMor[
+        section.querySelectorAll(".mw-headline").reverse()[0]?.innerText.trim()
+      ] = definitions;
+
+      // console.log(
+      //   `${section.querySelectorAll(".mw-headline").reverse()[0]?.innerText}`
+      // );
+    }
+
+    console.log("\n----------------\n");
   }
+  res.status(200).json({ value: definitionsMor });
 
-  res.status(200).json({ value: definitions, class: wordClass });
+  //console.log((maininfo ?? "")[0]);
+
+  //pega o tipo de classe referente a palavra
+  // let wordClass = root.querySelectorAll(".mw-headline")[2]?.text ?? "null";
+  // wordClass = wordClass.trim(); //limpa a string
+
+  // //a parte principal do html onde se encontram as possíveis definições
+  // //e seus exemplos em frases
+  // let definicoesMor = root.querySelector("ol");
+
+  // //uma lista que contem as possíveis definições e suas frases
+  // //filtra para coletar todos os <li> que não tenham parente <ul>
+  // //aqueles com parentes <ul> são exemplos de frases
+  // let exampleElementList =
+  //   definicoesMor
+  //     ?.querySelectorAll("li")
+  //     .filter((x) => x.parentNode.localName != "ul") ?? [];
+
+  // //lista de definições a ser retonada pela API
+  // let definitions: Array<Definition> = [];
+
+  // //caso a lista não for vazia
+  // if (exampleElementList.length > 0) {
+  //   exampleElementList.map((x) => {
+  //     let exampleContent = x.querySelector("ul");
+  //     let examplePhrase = exampleContent?.querySelectorAll("li");
+  //     let phraseList: Array<string> = [];
+  //     examplePhrase?.forEach((x) => phraseList.push(x.text.trim()));
+
+  //     let def: Definition = {
+  //       def: x.text.replace(exampleContent?.text ?? "", ""),
+  //       example: phraseList ?? "",
+  //     };
+  //     definitions.push(def);
+  //   });
+  // }
+
+  //res.status(200).json({ value: definitions, class: wordClass });
 }
