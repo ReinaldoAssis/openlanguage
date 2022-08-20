@@ -20,12 +20,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  const debug = false;
   let args = req.query;
   //convertendo valores URI para strings
   if (args.base != "") args.base = decodeURI(args.base?.toString() ?? "");
   if (args.word != "") args.word = decodeURI(args.word?.toString() ?? "");
 
-  console.log(`Definition request ${args.word} lang=${args.base}`);
+  if (debug) console.log(`Definition request ${args.word} lang=${args.base}`);
 
   let html = await (
     await fetch(
@@ -40,7 +41,8 @@ export default async function handler(
 
   //limpa as tabelas do codigo fonte
   root.querySelectorAll("table").forEach((t) => t.remove());
-  //pega a posição (se houver) da primeira sectionlanguage que não seja FR TODO: remove hardcoded language
+
+  //pega a posição (se houver) da primeira sectionlanguage que NÃO seja FR TODO: remove hardcoded language
 
   let position = "";
   try {
@@ -48,16 +50,22 @@ export default async function handler(
       .querySelectorAll(".sectionlangue")
       .filter((x) => x.id != "fr")[0].innerHTML;
   } catch {
-    position = "</div>";
+    position = "null";
   }
 
-  console.log(`Position: ${position}`);
+  if (debug) console.log(`Position: ${position}`);
 
   let aux_html = root.querySelector(".mw-parser-output")?.innerHTML ?? "";
-  let maininfo =
-    aux_html.substring(0, aux_html.indexOf(position)).split("</ol>") ?? [];
 
-  console.log(`Main info ${maininfo.length}`);
+  //this treats the aux_html as to ignore all other languages other than the base language
+  //if there aren't other languages in the page, position = "null" and so it splits directly from
+  //the aux_html
+  let maininfo =
+    position != "null"
+      ? aux_html.substring(0, aux_html.indexOf(position)).split("</ol>") ?? []
+      : aux_html.split("</ol>") ?? [];
+
+  if (debug) console.log(`Main info ${maininfo.length}`);
 
   let definitionsMor: Dictionary<Array<Definition>> = {};
 
@@ -65,11 +73,21 @@ export default async function handler(
     maininfo[i] += "</ol>";
     let section = parse(maininfo[i]);
 
-    if (
-      section
-        .querySelectorAll("b")
-        .filter((x) => x.text.includes(args.word + "")).length > 0
-    ) {
+    //how many <b>{word}</b> elements there are in the section, determines if the section is about what
+    //we want
+    let flag = section
+      .querySelectorAll("b")
+      .filter((x) => x.text.includes(args.word + ""));
+
+    if (debug) {
+      console.log("------Section---------");
+      console.log(section.toString());
+      console.log("---------------");
+
+      console.log(`Flag ${flag.length}`);
+    }
+
+    if (flag.length > 0) {
       //a parte principal do html onde se encontram as possíveis definições
       //e seus exemplos em frases
       let definicoesMor = section.querySelector("ol");
@@ -81,6 +99,9 @@ export default async function handler(
         definicoesMor
           ?.querySelectorAll("li")
           .filter((x) => x.parentNode.localName != "ul") ?? [];
+
+      if (debug)
+        console.log(`Example element list ${exampleElementList.length}`);
 
       //lista de definições a ser retonada pela API
       let definitions: Array<Definition> = [];
@@ -107,10 +128,12 @@ export default async function handler(
     }
   }
 
-  console.log("---------------");
-  console.log("Definitions mor");
-  console.log(definitionsMor);
-  console.log("---------------");
+  if (debug) {
+    console.log("---------------");
+    console.log("Definitions mor");
+    console.log(definitionsMor);
+    console.log("---------------");
+  }
 
   res.status(200).json({ value: definitionsMor });
 }
