@@ -31,7 +31,6 @@ async function fetch_phrase(): Promise<fetchData> {
 
 export default function RandPhrase() {
   const [frase, setFrase] = useState("Hi mom hi dad");
-  //const [translation, setTranslation] = useState(Array<string>);
   const [width, setWidth] = useState(600);
 
   //called when window is resized
@@ -127,13 +126,6 @@ async function get_definition(
       )
     ).json();
 
-    let parsedObj = {};
-    // Object.values(wikitext.value).forEach((v, i) => {
-    //   console.log(Object.keys(wikitext.value)[i]);
-    //   console.log(v);
-    // });
-
-    // console.log(Object.values(wikitext.value)[0][0].def);
     return Object.values(wikitext.value)[0][0].def;
   }
 
@@ -153,7 +145,8 @@ function clean_word(word: string): string {
     .replaceAll("d'", "")
     .replaceAll("D'", "")
     .replaceAll("-Tu", "")
-    .replaceAll("-Vous", "");
+    .replaceAll("-Vous", "")
+    .replaceAll("qu'", "");
 
   return word;
 }
@@ -168,7 +161,16 @@ function WordElement({ word, i }: { word: string; i: number }) {
 
   const show = async () => {
     setShowTranslation(true);
-    setDefinition(await get_definition(definition, word));
+    if (definition == "Loading...") {
+      let def: string = await get_definition(definition, word);
+      let end: number = 0;
+
+      //Ends the content in the end of a complete word (that is, not broken)
+      def.split(" ").map((x) => {
+        if (end + x.length <= 50) end += x.length;
+      });
+      setDefinition(def.length > 50 ? def.substring(0, end) + "..." : def);
+    }
   };
   const hide = () => setShowTranslation(false);
 
