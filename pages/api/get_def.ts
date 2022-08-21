@@ -20,7 +20,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const debug = false;
+  const debug = true;
   let args = req.query;
   //convertendo valores URI para strings
   if (args.base != "") args.base = decodeURI(args.base?.toString() ?? "");
@@ -43,10 +43,13 @@ export default async function handler(
   root.querySelectorAll("table").forEach((t) => t.remove());
 
   //pega a posição (se houver) da primeira sectionlanguage que NÃO seja FR TODO: remove hardcoded language
-
   let position = "";
   try {
-    position = root
+    position = parse(
+      root.innerHTML.substring(
+        root.innerHTML.indexOf(root.querySelector("#fr")?.toString() ?? "")
+      )
+    )
       .querySelectorAll(".sectionlangue")
       .filter((x) => x.id != "fr")[0].innerHTML;
   } catch {
