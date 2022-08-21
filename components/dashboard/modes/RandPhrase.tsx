@@ -144,9 +144,13 @@ function clean_word(word: string): string {
     .replaceAll("L'", "")
     .replaceAll("d'", "")
     .replaceAll("D'", "")
-    .replaceAll("-Tu", "")
-    .replaceAll("-Vous", "")
-    .replaceAll("qu'", "");
+    .replaceAll("-tu", "")
+    .replaceAll("-vous", "")
+    .replaceAll("qu'", "")
+    .replaceAll("-toi", "")
+    .replaceAll("-ci", "")
+    .replaceAll("-cela", "")
+    .replaceAll("j'");
 
   return word;
 }
