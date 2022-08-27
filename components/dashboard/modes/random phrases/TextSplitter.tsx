@@ -13,7 +13,6 @@ interface WikiTextWordClass {
 interface WikiText {
   value: WikiTextWordClass[];
 }
-
 /**Component responsible for displaying individual words with hover effect, tooltip display, etc.
  * @param text - takes a string text
  * @param width - screen width
@@ -51,6 +50,7 @@ export default function TextSplitter({
               key={randKey()}
               word={word}
               i={i}
+              width={width}
             />
           ))}
         </div>
@@ -104,10 +104,12 @@ function WordElement({
   word,
   i,
   displayDrawer,
+  width,
 }: {
   word: string;
   i: number;
   displayDrawer?: Function;
+  width?: number;
 }) {
   const [showTranslation, setShowTranslation] = useState(false);
   const [definition, setDefinition] = useState("Loading...");
@@ -145,6 +147,9 @@ function WordElement({
         onMouseEnter={() => {}} //show
         onMouseLeave={hide}
         onClick={() => {
+          if ((width ?? 600) > 700) displayDrawer?.();
+        }}
+        onTouchMove={() => {
           displayDrawer?.();
         }}
       >
