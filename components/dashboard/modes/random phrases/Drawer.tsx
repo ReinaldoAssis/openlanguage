@@ -40,35 +40,20 @@ function Mobile({ visible, height }: { visible: boolean; height: number }) {
     <>
       <motion.div
         // initial={{ y: -100 }}
+        drag="y"
+        dragConstraints={{
+          top: height - 0.99 * height,
+        }}
         animate={{
           bottom: posY,
           transition: { ease: [0.3, 1.14, 1, 0.99], duration: 0.8 },
         }}
+        style={{ borderBottomLeftRadius: 0, borderTopRightRadius: 15 }}
         className={mobileStyles.drawer}
       >
         <div className={mobileStyles.drawerHeader}>
           <h2>Word</h2>
           <h4>wɜːd</h4>
-          <div className={mobileStyles.drawerIcondiv}>
-            <Tooltip
-              content={"Add to deck"}
-              color={"primary"}
-              placement={"left"}
-              hideArrow
-              style={{ marginLeft: 8 }}
-            >
-              <PlayCard style={{ marginTop: 20 }} />
-            </Tooltip>
-            <Tooltip
-              content={"See in wiktionary"}
-              color={"primary"}
-              placement={"left"}
-              hideArrow
-              style={{ marginLeft: 9 }}
-            >
-              <ExternalLink style={{ marginTop: 5 }} />
-            </Tooltip>
-          </div>
         </div>
 
         <div className={mobileStyles.drawerBody}>
