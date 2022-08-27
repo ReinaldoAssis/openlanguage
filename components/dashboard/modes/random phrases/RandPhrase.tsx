@@ -21,11 +21,13 @@ async function fetch_phrase(): Promise<fetchData> {
 export default function RandPhrase() {
   const [frase, setFrase] = useState("Hi mom hi dad");
   const [width, setWidth] = useState(600);
+  const [height, setHeight] = useState(850);
   const [drawer, setDrawer] = useState(false);
 
   //called when window is resized
   const updateDimensions = () => {
     setWidth(window.innerWidth);
+    setHeight(window.innerHeight);
   };
 
   //gets the window size and the risize event
@@ -70,7 +72,7 @@ export default function RandPhrase() {
           <TextSplitter width={width} text={frase} displayDrawer={showDrawer} />
           <RefreshButton onClick={refresh} />
         </div>
-        <Drawer visible={drawer} />
+        <Drawer visible={drawer} width={width} height={height} />
       </main>
     </>
   );
