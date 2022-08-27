@@ -1,16 +1,20 @@
 import styles from "../../../../styles/Dashboard.module.css";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { ExternalLink, PlayCard } from "tabler-icons-react";
+import { Button, Tooltip } from "@nextui-org/react";
 
 export default function Drawer({ visible }: { visible: boolean }) {
   const [posx, setPosx] = useState(500);
 
   useEffect(() => {
-    setPosx(visible ? 0 : 500);
+    // setPosx(visible ? 0 : 500);
+    setPosx(0);
   }, [visible]);
 
   useEffect(() => {
-    setPosx(500);
+    // setPosx(500);
+    setPosx(0);
   }, []);
 
   return (
@@ -22,11 +26,30 @@ export default function Drawer({ visible }: { visible: boolean }) {
           transition: { ease: "easeIn", duration: 0.2 },
         }}
         className={styles.drawer}
-        onBlur={() => console.log("out")}
       >
         <div className={styles.drawerHeader}>
           <h2>Word</h2>
           <h4>wɜːd</h4>
+          <div className={styles.drawerIcondiv}>
+            <Tooltip
+              content={"Add to deck"}
+              color={"primary"}
+              placement={"left"}
+              hideArrow
+              style={{ marginLeft: 8 }}
+            >
+              <PlayCard style={{ marginTop: 20 }} />
+            </Tooltip>
+            <Tooltip
+              content={"See in wiktionary"}
+              color={"primary"}
+              placement={"left"}
+              hideArrow
+              style={{ marginLeft: 9 }}
+            >
+              <ExternalLink style={{ marginTop: 5 }} />
+            </Tooltip>
+          </div>
         </div>
 
         <div className={styles.drawerBody}>
