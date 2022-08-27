@@ -1,5 +1,8 @@
+import { Col, Dropdown, Grid, Tooltip } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import { ExternalLink, MessageLanguage, PlayCard } from "tabler-icons-react";
 import styles from "../../../../styles/Dashboard.module.css";
+import mbStyles from "../../../../styles/mobile/Drawer.module.css";
 
 interface WikiTextDefinition {
   def: string;
@@ -133,6 +136,44 @@ function WordElement({
   };
   const hide = () => setShowTranslation(false);
 
+  function isMobile(): Boolean {
+    return (width ?? 600) <= 700;
+  }
+
+  let element: JSX.Element = (
+    <h3
+      key={`${i}targetword`}
+      style={{ marginLeft: i != 0 ? 6 : 0 }}
+      className={styles.targetword}
+      onMouseEnter={() => {}} //show
+      onMouseLeave={hide}
+      onClick={() => {
+        if (!isMobile()) displayDrawer?.();
+      }}
+      onTouchMove={() => {
+        displayDrawer?.();
+      }}
+    >
+      {word}
+    </h3>
+  );
+
+  let wordMenu: JSX.Element = (
+    <>
+      <Grid.Container
+        css={{
+          mw: "250px",
+          borderRadius: "$lg",
+          padding: "$sm",
+        }}
+        className={mbStyles.drawerHeader}
+      >
+        <PlayCard />
+        <ExternalLink />
+      </Grid.Container>
+    </>
+  );
+
   return (
     <>
       {showTranslation ? (
@@ -140,21 +181,37 @@ function WordElement({
           <h3 className={styles.translationword}>{definition}</h3>
         </div>
       ) : null}
-      <h3
-        key={`${i}targetword`}
-        style={{ marginLeft: i != 0 ? 6 : 0 }}
-        className={styles.targetword}
-        onMouseEnter={() => {}} //show
-        onMouseLeave={hide}
-        onClick={() => {
-          if ((width ?? 600) > 700) displayDrawer?.();
-        }}
-        onTouchMove={() => {
-          displayDrawer?.();
-        }}
-      >
-        {word}
-      </h3>
+
+      {isMobile() ? (
+        <Dropdown>
+          <Dropdown.Trigger>{element}</Dropdown.Trigger>
+          <Dropdown.Menu color="primary" aria-label="Actions">
+            <Dropdown.Item
+              key="Save"
+              description="Save word to deck"
+              icon={<PlayCard color="#0087f5" size={30} />}
+            >
+              Save
+            </Dropdown.Item>
+            <Dropdown.Item
+              key="Definition"
+              description="Show word definition"
+              icon={<MessageLanguage color="#0087f5" size={30} />}
+            >
+              <a onClick={() => displayDrawer?.()}>Definition</a>
+            </Dropdown.Item>
+            <Dropdown.Item
+              key="External"
+              description="See word in wiktionary"
+              icon={<ExternalLink color="#0087f5" size={30} />}
+            >
+              Wiktionary
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      ) : (
+        element
+      )}
     </>
   );
 }
