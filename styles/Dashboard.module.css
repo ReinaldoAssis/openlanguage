@@ -80,11 +80,17 @@
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
   position: absolute;
   display: flex;
-  z-index: 2;
+  z-index: 4;
   right: 0px;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
   display: block;
+}
+
+@media (max-width: 600px) {
+  .drawer {
+    width: 100%;
+  }
 }
 
 .drawer h2 {
