@@ -14,7 +14,12 @@ interface WikiText {
   value: WikiTextWordClass[];
 }
 
-/**Component responsible for displaying individual words */
+/**Component responsible for displaying individual words with hover effect, tooltip display, etc.
+ * @param text - takes a string text
+ * @param width - screen width
+ * @param displayDrawer - function to be called when drawer event happens
+ * @returns displays word element array
+ */
 export default function TextSplitter({
   text,
   width,

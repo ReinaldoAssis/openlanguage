@@ -55,7 +55,6 @@ export default function RandPhrase() {
 
   function showDrawer() {
     setDrawer(!drawer);
-    console.log("changed to " + (drawer ? "visible" : "hidden"));
   }
 
   return (
@@ -77,6 +76,9 @@ export default function RandPhrase() {
   );
 }
 
+/**button responsible for triggering fetching of new phrases
+ * @param onClick - function to be called when button is clicked
+ */
 function RefreshButton({ onClick }: { onClick: Function }) {
   return (
     <>
