@@ -17,6 +17,7 @@
 .targetword {
   color: white;
   transition-duration: 100ms;
+  user-select: none;
 }
 
 .targetword:hover {
@@ -74,7 +75,7 @@
 
 .drawer {
   height: 100vh;
-  width: 22vw;
+  width: 25rem;
   background-color: white;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
   position: absolute;
@@ -83,4 +84,48 @@
   right: 0px;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
+  display: block;
+}
+
+.drawer h2 {
+  color: black;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.drawer h4 {
+  color: rgb(100, 100, 100);
+  margin-left: 10px;
+  align-self: center;
+}
+
+.drawerHeader {
+  display: flex;
+  vertical-align: middle;
+  height: 80px;
+  width: 100%;
+}
+
+.drawerBody {
+  display: block;
+  width: 100%;
+  color: black;
+  padding: 20px;
+}
+
+.drawerBody p {
+  text-justify: inter-word !important;
+
+  font-weight: 500;
+  font-size: large;
+}
+
+.drawerDef h4 {
+  margin: 0;
+  color: #008cff;
+  text-shadow: 0 0 4px #0076d721;
+}
+
+.drawerDef {
+  color: black;
 }

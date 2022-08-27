@@ -72,7 +72,13 @@ export default function RandPhrase() {
 
   return (
     <>
-      <main className={styles.main}>
+      <main
+        className={styles.main}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (drawer) setDrawer(false);
+        }}
+      >
         <div className={styles.phrasedisplay}>
           <TextSplitter width={width} text={frase} displayDrawer={showDrawer} />
           <RefreshButton onClick={refresh} />
