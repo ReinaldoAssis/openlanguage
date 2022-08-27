@@ -69,3 +69,18 @@
 .translationword {
   color: rgb(171, 171, 171);
 }
+
+/* ========== */
+
+.drawer {
+  height: 100vh;
+  width: 22vw;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  position: absolute;
+  display: flex;
+  z-index: 2;
+  right: 0px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}

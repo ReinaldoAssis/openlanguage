@@ -2,7 +2,8 @@ import { Button } from "@nextui-org/react";
 import Image from "next/image";
 import parse from "node-html-parser";
 import { useEffect, useState } from "react";
-import styles from "../../../styles/Dashboard.module.css";
+import styles from "../../../../styles/Dashboard.module.css";
+import Drawer from "./Drawer";
 
 //random phrase mode
 
@@ -32,6 +33,7 @@ async function fetch_phrase(): Promise<fetchData> {
 export default function RandPhrase() {
   const [frase, setFrase] = useState("Hi mom hi dad");
   const [width, setWidth] = useState(600);
+  const [drawer, setDrawer] = useState(false);
 
   //called when window is resized
   const updateDimensions = () => {
@@ -63,13 +65,19 @@ export default function RandPhrase() {
     fetch_phrase().then((x) => setFrase("" + x.target));
   };
 
+  function showDrawer() {
+    setDrawer(!drawer);
+    console.log("changed to " + (drawer ? "visible" : "hidden"));
+  }
+
   return (
     <>
       <main className={styles.main}>
         <div className={styles.phrasedisplay}>
-          <TextSplitter width={width} text={frase} />
+          <TextSplitter width={width} text={frase} displayDrawer={showDrawer} />
           <RefreshButton onClick={refresh} />
         </div>
+        <Drawer visible={drawer} />
       </main>
     </>
   );
@@ -88,7 +96,16 @@ function RefreshButton({ onClick }: { onClick: Function }) {
   );
 }
 
-function TextSplitter({ text, width }: { text: string; width: number }) {
+/**Component responsible for displaying individual words */
+function TextSplitter({
+  text,
+  width,
+  displayDrawer,
+}: {
+  text: string;
+  width: number;
+  displayDrawer?: Function;
+}) {
   const spl = text.split(" ");
 
   let brokenLines: Array<Array<string>> = [];
@@ -106,7 +123,12 @@ function TextSplitter({ text, width }: { text: string; width: number }) {
       {brokenLines.map((line, j) => (
         <div key={randKey()} className={styles.brokenline}>
           {line.map((word, i) => (
-            <WordElement key={randKey()} word={word} i={i} />
+            <WordElement
+              displayDrawer={displayDrawer}
+              key={randKey()}
+              word={word}
+              i={i}
+            />
           ))}
         </div>
       ))}
@@ -150,12 +172,20 @@ function clean_word(word: string): string {
     .replaceAll("-toi", "")
     .replaceAll("-ci", "")
     .replaceAll("-cela", "")
-    .replaceAll("j'");
+    .replaceAll("j'", "");
 
   return word;
 }
 
-function WordElement({ word, i }: { word: string; i: number }) {
+function WordElement({
+  word,
+  i,
+  displayDrawer,
+}: {
+  word: string;
+  i: number;
+  displayDrawer?: Function;
+}) {
   const [showTranslation, setShowTranslation] = useState(false);
   const [definition, setDefinition] = useState("Loading...");
 
@@ -189,8 +219,11 @@ function WordElement({ word, i }: { word: string; i: number }) {
         key={`${i}targetword`}
         style={{ marginLeft: i != 0 ? 6 : 0 }}
         className={styles.targetword}
-        onMouseEnter={show}
+        onMouseEnter={() => {}} //show
         onMouseLeave={hide}
+        onClick={() => {
+          displayDrawer?.();
+        }}
       >
         {word}
       </h3>
