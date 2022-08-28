@@ -43,6 +43,7 @@ function Mobile({ visible, height }: { visible: boolean; height: number }) {
         drag="y"
         dragConstraints={{
           top: height - 0.99 * height,
+          bottom: height - 400,
         }}
         animate={{
           bottom: posY,
