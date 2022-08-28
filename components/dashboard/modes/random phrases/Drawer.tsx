@@ -5,17 +5,35 @@ import { useEffect, useState } from "react";
 import { ExternalLink, PlayCard } from "tabler-icons-react";
 import { Button, Tooltip } from "@nextui-org/react";
 
+type Definition = {
+  def: string;
+  example: string | Array<string>;
+};
+
+interface Dictionary<T> {
+  [Key: string]: T;
+}
+
 export default function Drawer({
   visible,
   width,
   height,
+  definitions = {},
+  word,
 }: {
   visible: boolean;
   width: number;
   height: number;
+  definitions?: Dictionary<Array<Definition>>;
+  word: string;
 }) {
   return width <= 700 ? (
-    <Mobile visible={visible} height={height} />
+    <Mobile
+      word={word}
+      visible={visible}
+      height={height}
+      definitions={definitions}
+    />
   ) : (
     <Desktop visible={visible} />
   );
@@ -23,8 +41,19 @@ export default function Drawer({
 
 //#region Mobile
 
-function Mobile({ visible, height }: { visible: boolean; height: number }) {
+function Mobile({
+  visible,
+  height,
+  definitions: defClasses,
+  word,
+}: {
+  visible: boolean;
+  height: number;
+  definitions: Dictionary<Array<Definition>>;
+  word: string;
+}) {
   const [posY, setposY] = useState(-height);
+  // let keys : Array<string> = [];
 
   useEffect(() => {
     setposY(visible ? 0 : -height);
@@ -35,6 +64,12 @@ function Mobile({ visible, height }: { visible: boolean; height: number }) {
     // setposY(500);
     // setposY(0);
   }, []);
+
+  function clean(w: string) {
+    let ar = [".", ",", "!", "...", "?"];
+    for (let x of ar) w = w.replace(x, "");
+    return w;
+  }
 
   return (
     <>
@@ -53,23 +88,23 @@ function Mobile({ visible, height }: { visible: boolean; height: number }) {
         className={mobileStyles.drawer}
       >
         <div className={mobileStyles.drawerHeader}>
-          <h2>Word</h2>
+          <h2>{clean(word)}</h2>
           <h4>wɜːd</h4>
         </div>
 
         <div className={mobileStyles.drawerBody}>
-          <div className={mobileStyles.drawerDef}>
-            <h4>1. Nom commun </h4>
-            <p style={{ textAlign: "justify" }}>
-              &emsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-              do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-          </div>
+          {Object.keys(defClasses).map((item, i) => {
+            return (
+              <div className={mobileStyles.drawerDef}>
+                <h4>
+                  {i + 1}. {item}{" "}
+                </h4>
+                <p style={{ textAlign: "justify" }}>
+                  &emsp;{(Object.values(defClasses).at(i) ?? [])[0].def}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </motion.div>
     </>

@@ -29,7 +29,7 @@ export default function TextSplitter({
 }: {
   text: string;
   width: number;
-  displayDrawer?: Function;
+  displayDrawer?: (word: string) => void;
 }) {
   const spl = text.split(" ");
 
@@ -111,7 +111,7 @@ function WordElement({
 }: {
   word: string;
   i: number;
-  displayDrawer?: Function;
+  displayDrawer?: (word: string) => void;
   width?: number;
 }) {
   const [showTranslation, setShowTranslation] = useState(false);
@@ -148,10 +148,10 @@ function WordElement({
       onMouseEnter={() => {}} //show
       onMouseLeave={hide}
       onClick={() => {
-        if (!isMobile()) displayDrawer?.();
+        if (!isMobile()) displayDrawer?.(word);
       }}
       onTouchMove={() => {
-        displayDrawer?.();
+        displayDrawer?.(word);
       }}
     >
       {word}
@@ -198,7 +198,7 @@ function WordElement({
               description="Show word definition"
               icon={<MessageLanguage color="#0087f5" size={30} />}
             >
-              <a onClick={() => displayDrawer?.()}>Definition</a>
+              <a onClick={() => displayDrawer?.(word)}>Definition</a>
             </Dropdown.Item>
             <Dropdown.Item
               key="External"

@@ -23,6 +23,7 @@ export default function RandPhrase() {
   const [width, setWidth] = useState(600);
   const [height, setHeight] = useState(850);
   const [drawer, setDrawer] = useState(false);
+  const [word, setWord] = useState("");
 
   //called when window is resized
   const updateDimensions = () => {
@@ -55,7 +56,8 @@ export default function RandPhrase() {
     fetch_phrase().then((x) => setFrase("" + x.target));
   };
 
-  function showDrawer() {
+  function showDrawer(_word: string) {
+    setWord(_word);
     setDrawer(!drawer);
   }
 
@@ -72,7 +74,16 @@ export default function RandPhrase() {
           <TextSplitter width={width} text={frase} displayDrawer={showDrawer} />
           <RefreshButton onClick={refresh} />
         </div>
-        <Drawer visible={drawer} width={width} height={height} />
+        <Drawer
+          visible={drawer}
+          width={width}
+          height={height}
+          word={word}
+          definitions={{
+            test: [{ def: "idk", example: ["this is an ex"] }],
+            test2: [{ def: "lets see", example: ["blank"] }],
+          }}
+        />
       </main>
     </>
   );
