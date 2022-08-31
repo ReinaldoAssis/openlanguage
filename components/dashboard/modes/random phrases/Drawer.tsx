@@ -4,15 +4,8 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { ExternalLink, PlayCard } from "tabler-icons-react";
 import { Button, Tooltip } from "@nextui-org/react";
-
-type Definition = {
-  def: string;
-  example: string | Array<string>;
-};
-
-interface Dictionary<T> {
-  [Key: string]: T;
-}
+import { clean_word } from "./fetch_functions";
+import { Definition, Dictionary } from "./fetch_functions";
 
 export default function Drawer({
   visible,
@@ -24,7 +17,7 @@ export default function Drawer({
   visible: boolean;
   width: number;
   height: number;
-  definitions?: Dictionary<Array<Definition>>;
+  definitions?: Dictionary<Array<Definition>> | undefined;
   word: string;
 }) {
   return width <= 700 ? (
@@ -49,7 +42,7 @@ function Mobile({
 }: {
   visible: boolean;
   height: number;
-  definitions: Dictionary<Array<Definition>>;
+  definitions: Dictionary<Array<Definition>> | undefined;
   word: string;
 }) {
   const [posY, setposY] = useState(-height);
@@ -71,6 +64,23 @@ function Mobile({
     return w;
   }
 
+  function mappedDefs(): JSX.Element[] {
+    let element: JSX.Element[];
+    element = Object.keys(defClasses ?? {}).map((item, i) => {
+      return (
+        <div className={mobileStyles.drawerDef}>
+          <h4>
+            {i + 1}. {item}{" "}
+          </h4>
+          <p style={{ textAlign: "justify" }}>
+            &emsp;{(Object.values(defClasses ?? {}).at(i) ?? [])[0].def}
+          </p>
+        </div>
+      );
+    });
+    return element;
+  }
+
   return (
     <>
       <motion.div
@@ -88,24 +98,11 @@ function Mobile({
         className={mobileStyles.drawer}
       >
         <div className={mobileStyles.drawerHeader}>
-          <h2>{clean(word)}</h2>
+          <h2>{clean_word(word)}</h2>
           <h4>wɜːd</h4>
         </div>
 
-        <div className={mobileStyles.drawerBody}>
-          {Object.keys(defClasses).map((item, i) => {
-            return (
-              <div className={mobileStyles.drawerDef}>
-                <h4>
-                  {i + 1}. {item}{" "}
-                </h4>
-                <p style={{ textAlign: "justify" }}>
-                  &emsp;{(Object.values(defClasses).at(i) ?? [])[0].def}
-                </p>
-              </div>
-            );
-          })}
-        </div>
+        <div className={mobileStyles.drawerBody}>{mappedDefs()}</div>
       </motion.div>
     </>
   );

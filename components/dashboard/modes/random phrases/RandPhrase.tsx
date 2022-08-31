@@ -4,6 +4,7 @@ import parse from "node-html-parser";
 import { useEffect, useState } from "react";
 import styles from "../../../../styles/Dashboard.module.css";
 import Drawer from "./Drawer";
+import { Definition, Dictionary, get_definition } from "./fetch_functions";
 import TextSplitter from "./TextSplitter";
 
 //random phrase mode
@@ -23,7 +24,9 @@ export default function RandPhrase() {
   const [width, setWidth] = useState(600);
   const [height, setHeight] = useState(850);
   const [drawer, setDrawer] = useState(false);
+
   const [word, setWord] = useState("");
+  const [def, setDef] = useState({});
 
   //called when window is resized
   const updateDimensions = () => {
@@ -50,6 +53,25 @@ export default function RandPhrase() {
       "La pire chose que l'on puisse faire est de ne faire quelque chose qu'à moitié sérieusement."
     );
   }, []);
+
+  useEffect(() => {
+    const _fetch = async () => {
+      let obj: Dictionary<Definition[]> = await get_definition(word);
+      setDef(obj.value);
+    };
+
+    _fetch()
+      .then(() => {
+        console.log("heres the def");
+        Object.keys(def).forEach((x) => {
+          console.log(x);
+        });
+      })
+      .catch((e) => {
+        console.log("Error fetching definitions");
+        console.log(e);
+      });
+  }, [word]);
 
   //button action, gets a new random phrase
   const refresh = () => {
@@ -79,10 +101,7 @@ export default function RandPhrase() {
           width={width}
           height={height}
           word={word}
-          definitions={{
-            test: [{ def: "idk", example: ["this is an ex"] }],
-            test2: [{ def: "lets see", example: ["blank"] }],
-          }}
+          definitions={def}
         />
       </main>
     </>

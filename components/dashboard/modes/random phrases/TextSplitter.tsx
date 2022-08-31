@@ -4,18 +4,6 @@ import { ExternalLink, MessageLanguage, PlayCard } from "tabler-icons-react";
 import styles from "../../../../styles/Dashboard.module.css";
 import mbStyles from "../../../../styles/mobile/Drawer.module.css";
 
-interface WikiTextDefinition {
-  def: string;
-  example: string[];
-}
-
-interface WikiTextWordClass {
-  [wordClass: string]: WikiTextDefinition;
-}
-
-interface WikiText {
-  value: WikiTextWordClass[];
-}
 /**Component responsible for displaying individual words with hover effect, tooltip display, etc.
  * @param text - takes a string text
  * @param width - screen width
@@ -62,47 +50,6 @@ export default function TextSplitter({
   );
 }
 
-async function get_definition(
-  currentDefinition: string,
-  word: string
-): Promise<string> {
-  if (currentDefinition == "Loading...") {
-    //TODO: change hard coded language
-    let wikitext: WikiText = await (
-      await fetch(
-        `/api/get_def?base=${"fr"}&word=${encodeURI(clean_word(word))}`
-      )
-    ).json();
-
-    return Object.values(wikitext.value)[0][0].def;
-  }
-
-  return "";
-}
-
-function clean_word(word: string): string {
-  word = word.trim().toLowerCase();
-  word = word
-    .replaceAll(".", "")
-    .replaceAll("?", "")
-    .replaceAll("!", "")
-    .replaceAll(",", "")
-    .replaceAll(";", "")
-    .replaceAll("l'", "")
-    .replaceAll("L'", "")
-    .replaceAll("d'", "")
-    .replaceAll("D'", "")
-    .replaceAll("-tu", "")
-    .replaceAll("-vous", "")
-    .replaceAll("qu'", "")
-    .replaceAll("-toi", "")
-    .replaceAll("-ci", "")
-    .replaceAll("-cela", "")
-    .replaceAll("j'", "");
-
-  return word;
-}
-
 function WordElement({
   word,
   i,
@@ -121,19 +68,6 @@ function WordElement({
     setDefinition("Loading...");
   }, []);
 
-  const show = async () => {
-    setShowTranslation(true);
-    if (definition == "Loading...") {
-      let def: string = await get_definition(definition, word);
-      let end: number = 0;
-
-      //Ends the content in the end of a complete word (that is, not broken)
-      def.split(" ").map((x) => {
-        if (end + x.length <= 50) end += x.length;
-      });
-      setDefinition(def.length > 50 ? def.substring(0, end) + "..." : def);
-    }
-  };
   const hide = () => setShowTranslation(false);
 
   function isMobile(): Boolean {
