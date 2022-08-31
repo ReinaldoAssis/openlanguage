@@ -62,7 +62,7 @@ export default function RandPhrase() {
 
     _fetch()
       .then(() => {
-        console.log("heres the def");
+        //console.log("heres the def");
         Object.keys(def).forEach((x) => {
           console.log(x);
         });
