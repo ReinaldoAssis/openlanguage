@@ -1,16 +1,3 @@
-// interface WikiTextDefinition {
-//   def: string;
-//   example: string[];
-// }
-
-// interface WikiTextWordClass {
-//   [wordClass: string]: WikiTextDefinition;
-// }
-
-// interface WikiText {
-//   value: WikiTextWordClass[];
-// }
-
 export type Definition = {
   def: string;
   example: string | Array<string>;
@@ -60,4 +47,8 @@ export function clean_word(word: string): string {
     .replaceAll("j'", "");
 
   return word;
+}
+
+export function randKey(seed?: number): string {
+  return (Math.random() * (seed ?? 1) + 1).toString(36).substring(7);
 }

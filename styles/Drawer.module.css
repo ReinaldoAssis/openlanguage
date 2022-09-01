@@ -39,11 +39,11 @@
 
 .drawerIcondiv {
   align-self: center;
-  margin-left: 20px;
+  /* margin-left: 20px; */
   transition-duration: 50ms;
   transition-timing-function: ease-in-out;
   transition-property: all;
-  translate: -220px 20px;
+  /* translate: -180px 20px; */
   border-radius: 20px;
   background-color: white;
   /* padding: 10px; */
@@ -52,6 +52,9 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  position: absolute;
+  right: 26rem;
+  top: 20px;
 }
 
 .drawerIcondiv svg:hover {

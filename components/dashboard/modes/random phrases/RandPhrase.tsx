@@ -55,6 +55,7 @@ export default function RandPhrase() {
   }, []);
 
   useEffect(() => {
+    setDrawer(true);
     const _fetch = async () => {
       let obj: Dictionary<Definition[]> = await get_definition(word);
       setDef(obj.value);

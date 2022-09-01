@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { ExternalLink, PlayCard } from "tabler-icons-react";
 import { Button, Tooltip } from "@nextui-org/react";
-import { clean_word } from "./fetch_functions";
+import { clean_word, randKey } from "./fetch_functions";
 import { Definition, Dictionary } from "./fetch_functions";
 
 export default function Drawer({
@@ -28,7 +28,12 @@ export default function Drawer({
       definitions={definitions}
     />
   ) : (
-    <Desktop visible={visible} />
+    <Desktop
+      visible={visible}
+      height={height}
+      definitions={definitions}
+      word={word}
+    />
   );
 }
 
@@ -46,7 +51,6 @@ function Mobile({
   word: string;
 }) {
   const [posY, setposY] = useState(-height);
-  // let keys : Array<string> = [];
 
   useEffect(() => {
     setposY(visible ? 0 : -height);
@@ -54,21 +58,14 @@ function Mobile({
   }, [visible]);
 
   useEffect(() => {
-    // setposY(500);
-    // setposY(0);
+    setposY(-height);
   }, []);
-
-  function clean(w: string) {
-    let ar = [".", ",", "!", "...", "?"];
-    for (let x of ar) w = w.replace(x, "");
-    return w;
-  }
 
   function mappedDefs(): JSX.Element[] {
     let element: JSX.Element[];
     element = Object.keys(defClasses ?? {}).map((item, i) => {
       return (
-        <div className={mobileStyles.drawerDef}>
+        <div className={mobileStyles.drawerDef} key={randKey(2410)}>
           <h4>
             {i + 1}. {item}{" "}
           </h4>
@@ -112,7 +109,17 @@ function Mobile({
 
 //#region Desktop
 /** render drawer for desktop screens */
-function Desktop({ visible }: { visible: boolean }) {
+function Desktop({
+  visible,
+  height,
+  definitions: defClasses,
+  word,
+}: {
+  visible: boolean;
+  height: number;
+  definitions: Dictionary<Array<Definition>> | undefined;
+  word: string;
+}) {
   const [posx, setPosx] = useState(500);
 
   useEffect(() => {
@@ -122,8 +129,31 @@ function Desktop({ visible }: { visible: boolean }) {
 
   useEffect(() => {
     // setPosx(500);
-    // setPosx(0);
   }, []);
+
+  function mappedDefs(): JSX.Element[] {
+    try {
+      let element: JSX.Element[];
+      element = Object.keys(defClasses ?? {}).map((item, i) => {
+        return (
+          <div className={mobileStyles.drawerDef} key={randKey(2410)}>
+            <h4>
+              {i + 1}. {item}{" "}
+            </h4>
+            <p style={{ textAlign: "justify" }}>
+              &emsp;{(Object.values(defClasses ?? {}).at(i) ?? [])[0].def}
+            </p>
+          </div>
+        );
+      });
+      return element;
+    } catch {
+      visible = false;
+
+      console.log("An error occured while mapping definitions");
+      return [];
+    }
+  }
 
   return (
     <>
@@ -136,7 +166,7 @@ function Desktop({ visible }: { visible: boolean }) {
         className={styles.drawer}
       >
         <div className={styles.drawerHeader}>
-          <h2>Word</h2>
+          <h2>{clean_word(word)}</h2>
           <h4>wɜːd</h4>
           <div className={styles.drawerIcondiv}>
             <Tooltip
@@ -160,20 +190,7 @@ function Desktop({ visible }: { visible: boolean }) {
           </div>
         </div>
 
-        <div className={styles.drawerBody}>
-          <div className={styles.drawerDef}>
-            <h4>1. Nom commun </h4>
-            <p style={{ textAlign: "justify" }}>
-              &emsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-              do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-          </div>
-        </div>
+        <div className={styles.drawerBody}>{mappedDefs()}</div>
       </motion.div>
     </>
   );
