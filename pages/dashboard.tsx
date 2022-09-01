@@ -4,9 +4,13 @@ import RandPhrase from "../components/dashboard/modes/random phrases/RandPhrase"
 import { Navbar } from "../components/dashboard/Navbar";
 
 export default function Dashboard() {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+  }, []);
+
   return (
-    <div style={{ overflow: "hidden" }}>
+    <>
       <RandPhrase />
-    </div>
+    </>
   );
 }
