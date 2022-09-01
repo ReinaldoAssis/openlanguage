@@ -5,8 +5,8 @@ import { Navbar } from "../components/dashboard/Navbar";
 
 export default function Dashboard() {
   return (
-    <>
+    <div style={{ overflow: "hidden" }}>
       <RandPhrase />
-    </>
+    </div>
   );
 }
