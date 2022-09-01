@@ -62,20 +62,27 @@ function Mobile({
   }, []);
 
   function mappedDefs(): JSX.Element[] {
-    let element: JSX.Element[];
-    element = Object.keys(defClasses ?? {}).map((item, i) => {
-      return (
-        <div className={mobileStyles.drawerDef} key={randKey(2410)}>
-          <h4>
-            {i + 1}. {item}{" "}
-          </h4>
-          <p style={{ textAlign: "justify" }}>
-            &emsp;{(Object.values(defClasses ?? {}).at(i) ?? [])[0].def}
-          </p>
-        </div>
-      );
-    });
-    return element;
+    try {
+      let element: JSX.Element[];
+      element = Object.keys(defClasses ?? {}).map((item, i) => {
+        return (
+          <div className={mobileStyles.drawerDef} key={randKey(2410)}>
+            <h4>
+              {i + 1}. {item}{" "}
+            </h4>
+            <p style={{ textAlign: "justify" }}>
+              &emsp;{(Object.values(defClasses ?? {}).at(i) ?? [])[0].def}
+            </p>
+          </div>
+        );
+      });
+      return element;
+    } catch {
+      visible = false;
+
+      console.log("An error occured while mapping definitions");
+      return [];
+    }
   }
 
   return (
