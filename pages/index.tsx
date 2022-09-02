@@ -8,8 +8,13 @@ import { SectionOne } from "../components/home/SectionOne";
 import { Landing } from "../components/home/Landing";
 import { Footer } from "../components/home/Footer";
 import { SectionTwo } from "../components/home/SectionTwo";
+import { useEffect } from "react";
 
 const Home: NextPage = () => {
+  useEffect(() => {
+    document.body.style.overflow = "scroll";
+  }, []);
+
   return (
     <>
       <div className={styles.container} style={{ padding: 0 }}>
@@ -24,7 +29,11 @@ const Home: NextPage = () => {
 
         {/*========== BODY ========== */}
         <div
-          style={{ backgroundColor: "white", height: "100vh", width: "100vw" }}
+          style={{
+            backgroundColor: "white",
+            height: "100vh",
+            width: "100vw",
+          }}
         >
           <Container
             css={{

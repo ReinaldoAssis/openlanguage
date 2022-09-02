@@ -7,12 +7,12 @@ type Data = {
   class?: string;
 };
 
-type Definition = {
+export type Definition = {
   def: string;
   example: string | Array<string>;
 };
 
-interface Dictionary<T> {
+export interface Dictionary<T> {
   [Key: string]: T;
 }
 
@@ -20,7 +20,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const debug = true;
+  const debug = false;
   let args = req.query;
   //convertendo valores URI para strings
   if (args.base != "") args.base = decodeURI(args.base?.toString() ?? "");
