@@ -1,7 +1,7 @@
 import { Button } from "@nextui-org/react";
 import Image from "next/image";
 import parse from "node-html-parser";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import styles from "../../../../styles/Dashboard.module.css";
 import Drawer from "./Drawer";
 import { Definition, Dictionary, get_definition } from "./fetch_functions";
@@ -39,6 +39,7 @@ export default function RandPhrase() {
     if (typeof window !== "undefined") {
       setWidth(window.innerWidth);
       window.addEventListener("resize", updateDimensions);
+      window.document.body.style.overflow = "hidden";
       return () => window.removeEventListener("resize", updateDimensions);
     }
   }, []);
