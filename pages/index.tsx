@@ -12,7 +12,8 @@ import { useEffect } from "react";
 
 const Home: NextPage = () => {
   useEffect(() => {
-    document.body.style.overflow = "scroll";
+    document.body.style.overflowY = "scroll";
+    document.body.style.overflowX = "hidden";
   }, []);
 
   return (

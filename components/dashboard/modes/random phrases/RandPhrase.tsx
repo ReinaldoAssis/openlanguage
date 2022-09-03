@@ -36,10 +36,13 @@ export default function RandPhrase() {
 
   //gets the window size and the risize event
   useEffect(() => {
+    document.body.style.overflowX = "hidden";
+    document.body.style.overflowY = "hidden";
+
     if (typeof window !== "undefined") {
       setWidth(window.innerWidth);
       window.addEventListener("resize", updateDimensions);
-      window.document.body.style.overflow = "hidden";
+
       return () => window.removeEventListener("resize", updateDimensions);
     }
   }, []);
