@@ -18,6 +18,8 @@ export const SectionOne = () => (
         <Image
           style={{ minWidth: "100%", minHeight: "100%" }}
           src="/home/hard.svg"
+          width={300}
+          height={400}
         />
       </Grid>
       <Grid
