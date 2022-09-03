@@ -14,9 +14,13 @@ export const SectionOne = () => (
     </Text>
 
     <Grid.Container gap={1} justify="center" css={{ height: "100%" }}>
-      <Grid xs={12} sm={4} css={{ minWidth: 300, maxHeight: 400 }}>
+      <Grid
+        xs={12}
+        sm={4}
+        css={{ minWidth: 300, maxHeight: 400, justifyContent: "center" }}
+      >
         <Image
-          style={{ minWidth: "100%", minHeight: "100%" }}
+          style={{ minWidth: "100%", minHeight: "100%", justifySelf: "center" }}
           src="/home/hard.svg"
           width={300}
           height={400}
