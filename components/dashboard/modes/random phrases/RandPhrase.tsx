@@ -39,9 +39,7 @@ export default function RandPhrase() {
     document.body.style.overflowX = "hidden";
     document.body.style.overflowY = "hidden";
     //FOR SAFARI
-    let root = document.getElementById("__next") ?? document.body;
-    root.style.overflowX = "hidden";
-    root.style.overflowY = "hidden";
+    document.querySelector("html")!.style.overflow = "hidden";
 
     if (typeof window !== "undefined") {
       setWidth(window.innerWidth);
