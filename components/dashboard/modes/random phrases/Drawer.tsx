@@ -98,7 +98,11 @@ function Mobile({
           bottom: posY,
           transition: { ease: [0.3, 1.14, 1, 0.99], duration: 0.8 },
         }}
-        style={{ borderBottomLeftRadius: 0, borderTopRightRadius: 15 }}
+        style={{
+          borderBottomLeftRadius: 0,
+          borderTopRightRadius: 15,
+          // display: visible ? "block" : "none",
+        }}
         className={mobileStyles.drawer}
       >
         <div className={mobileStyles.drawerHeader}>

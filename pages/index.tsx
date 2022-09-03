@@ -12,7 +12,10 @@ import { useEffect } from "react";
 
 const Home: NextPage = () => {
   useEffect(() => {
-    document.body.style.overflow = "scroll";
+    document.body.style.overflowY = "visible";
+    document.body.style.overflowX = "hidden";
+    //FOR SAFARI
+    document.querySelector("html")!.style.overflow = "visible";
   }, []);
 
   return (

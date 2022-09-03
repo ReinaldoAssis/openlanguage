@@ -9,7 +9,7 @@ export const Landing = () => (
         <a>OpenLanguage</a>
       </h1>
       <div className={styles.landingdiv}>
-        <Text h2 size={30} style={{ marginRight: 10 }} css={{ color: "white" }}>
+        <Text h2 size={30} style={{ marginRight: 6 }} css={{ color: "white" }}>
           Language acquisition for
         </Text>
         <Text
