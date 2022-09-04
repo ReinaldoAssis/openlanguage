@@ -70,9 +70,9 @@ export default function RandPhrase() {
     _fetch()
       .then(() => {
         //console.log("heres the def");
-        Object.keys(def).forEach((x) => {
-          console.log(x);
-        });
+        // Object.keys(def).forEach((x) => {
+        //   console.log(x);
+        // });
       })
       .catch((e) => {
         console.log("Error fetching definitions");

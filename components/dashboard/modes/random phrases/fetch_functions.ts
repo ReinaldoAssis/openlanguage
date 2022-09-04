@@ -1,6 +1,7 @@
 export type Definition = {
   def: string;
   example: string | Array<string>;
+  pronunciation?: string;
 };
 
 export interface Dictionary<T> {

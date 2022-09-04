@@ -107,7 +107,7 @@ function Mobile({
       >
         <div className={mobileStyles.drawerHeader}>
           <h2>{clean_word(word)}</h2>
-          <h4>wɜːd</h4>
+          <h4>{Object.values(defClasses ?? [])[0][0]?.pronunciation ?? ""}</h4>
         </div>
 
         <div className={mobileStyles.drawerBody}>{mappedDefs()}</div>
@@ -178,7 +178,8 @@ function Desktop({
       >
         <div className={styles.drawerHeader}>
           <h2>{clean_word(word)}</h2>
-          <h4>wɜːd</h4>
+          {/* <h4>wɜːd</h4> */}
+          <h4>{Object.values(defClasses ?? [])[0][0]?.pronunciation ?? ""}</h4>
           <div className={styles.drawerIcondiv}>
             <Tooltip
               content={"Add to deck"}

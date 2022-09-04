@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { HTMLElement, NodeType, parse } from "node-html-parser";
+import { parse } from "node-html-parser";
 
 type Data = {
   value: any;
@@ -10,6 +10,7 @@ type Data = {
 export type Definition = {
   def: string;
   example: string | Array<string>;
+  pronunciation?: string;
 };
 
 export interface Dictionary<T> {
@@ -109,6 +110,16 @@ export default async function handler(
       //lista de definições a ser retonada pela API
       let definitions: Array<Definition> = [];
 
+      //gets the pronunciation of the word
+      let pron = section
+        .querySelectorAll("span")
+        .filter(
+          (x) =>
+            x.getAttribute("title") == "Prononciation API" &&
+            x.parentNode.getAttribute("title")?.includes("français")
+        );
+      console.log("Pronunciation: " + pron[0]?.text);
+
       //caso a lista não for vazia
       if (exampleElementList.length > 0) {
         exampleElementList.map((x) => {
@@ -120,6 +131,7 @@ export default async function handler(
           let def: Definition = {
             def: x.text.replace(exampleContent?.text ?? "", ""),
             example: phraseList ?? "",
+            pronunciation: pron[0]?.text ?? "",
           };
           definitions.push(def);
         });
@@ -130,6 +142,8 @@ export default async function handler(
       ] = definitions;
     }
   }
+
+  //root.querySelectorAll("span").forEach((x) => console.log(x.attributes));
 
   if (debug) {
     console.log("---------------");
